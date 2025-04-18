@@ -1,0 +1,217 @@
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.categoryItem {
+  box-shadow: white;
+  border: none;
+}
+
+.filterHeading {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.filterCategories p {
+  font-size: 14px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+/* Filter Color */
+
+.filterColorBtn {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+}
+
+.colorButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.colorButton:hover {
+  transform: scale(1.1);
+  border-color: #000;
+}
+
+.colorButton.selected {
+  border-color: #000;
+  box-shadow: 0 0 0 2px #000;
+}
+
+.colorButton.selected::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #000;
+}
+
+/* Specific styles for each metal type */
+.colorButton[style*="gold"] {
+  background: linear-gradient(135deg, #ffd700, #daa520);
+}
+
+.colorButton[style*="silver"] {
+  background: linear-gradient(135deg, #c0c0c0, #a9a9a9);
+}
+
+.colorButton[style*="rose gold"] {
+  background: linear-gradient(135deg, #b76e79, #e6b8b7);
+}
+
+.colorButton[style*="white gold"] {
+  background: linear-gradient(135deg, #f5f5f5, #e6e6e6);
+}
+
+.colorButton[style*="platinum"] {
+  background: linear-gradient(135deg, #e5e4e2, #c0c0c0);
+}
+
+.colorButton[style*="black"] {
+  background: linear-gradient(135deg, #333333, #000000);
+}
+
+/* filter Sizes */
+
+.sizeButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.sizeButton {
+  background-color: white;
+  padding: 6px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 1px solid #e4e4e4;
+  outline: none;
+  font-size: 14px;
+}
+
+.sizeButton:hover {
+  background-color: #e4e4e4;
+}
+
+.sizeButton.selected {
+  background-color: #e4e4e4;
+}
+
+/* filter brands */
+
+.searchBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 10px;
+}
+
+.searchBar input {
+  width: calc(100% - 30px);
+  padding: 12px 18px 9.6px;
+  padding-right: 30px;
+  border: 2px solid #e4e4e4;
+  outline: none;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.brandList {
+  margin-top: 10px;
+}
+
+.brandItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.brandRadio {
+  margin-right: 15px;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e4e4e4;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+.brandRadio:checked {
+  border: 2px solid #000000;
+}
+
+.brandRadio::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.brandRadio:checked::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.notFoundMessage {
+  font-size: 14px;
+  color: red;
+  margin-top: 10px;
+}
+
+.brandLabel {
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.brandCount {
+  margin-left: auto;
+  font-size: 14px;
+  color: #767676;
+}
+
+/* Filter Slider */
+
+.priceRange {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.priceRange p {
+  font-size: 14px;
+  color: #767676;
+  font-weight: 400;
+}
+
+.priceRange p span {
+  color: black;
+}

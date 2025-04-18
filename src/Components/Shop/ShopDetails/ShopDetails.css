@@ -1,0 +1,495 @@
+.shopDetails {
+  padding: 0 160px;
+  margin-top: 30px;
+}
+
+.shopDetailMain {
+  display: flex;
+  gap: 30px;
+}
+
+.shopDetails__left {
+  width: 27%;
+}
+
+/* Shop Right Section */
+
+.shopDetails__right {
+  width: 77%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  gap: 40px;
+}
+
+.shopDetailsSorting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.shopDetailsBreadcrumbLink a {
+  text-decoration: none;
+  color: black;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  position: relative;
+  display: inline-block;
+}
+
+.shopDetailsBreadcrumbLink a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  border-bottom: 2px solid black;
+  transition: width 0.3s ease;
+}
+
+.shopDetailsBreadcrumbLink a:hover::after {
+  width: 100%;
+}
+
+.filterLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  display: none;
+}
+
+.filterLeft p {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.shopDetailsSort select {
+  border: none;
+  text-transform: uppercase;
+  outline: none;
+  font-weight: 500;
+  font-size: 14px;
+  background-color: white;
+}
+
+.shopDetailsSort {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filterRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  display: none;
+}
+
+.filterSeprator {
+  width: 2px;
+  height: 22px;
+  background-color: #e4e4e4;
+}
+
+/* Shop Products */
+
+.shopDetailsProductsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+  padding: 20px 0;
+}
+
+.sdProductContainer {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sdProductContainer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.sdProductImages {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.sdProductImages img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.sdProductInfo {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sdProductCategoryWishlist {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sdProductCategoryWishlist p {
+  color: #767676;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sdProductNameInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 5px;
+}
+
+.sdProductNameInfo h5 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sdProductNameInfo p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.sdProductNameInfo a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.sdProductNameInfo a:hover {
+  color: #767676;
+}
+
+.sdProductRatingReviews {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sdProductRatingStar {
+  display: flex;
+  gap: 2px;
+}
+
+.sdProductRatingReviews span {
+  color: #767676;
+  font-size: 14px;
+}
+
+.sdProductImagesCart {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.sdProductContainer:hover .sdProductImagesCart {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sdProductImagesCart:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* Drawer */
+
+.filterDrawer {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+.filterDrawer.open {
+  right: 0;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #faf9f8;
+  padding: 28px 20px;
+}
+
+.drawerHeader p {
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.closeButton {
+  cursor: pointer;
+}
+
+.drawerContent {
+  padding: 20px;
+  height: calc(100% - 130px);
+  overflow-y: auto;
+}
+
+/* Pagination */
+
+.shopDetailsPagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.shopDetailsPagination p {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.sdPaginationPrev p,
+.sdPaginationNext p {
+  position: relative;
+  cursor: pointer;
+}
+
+.sdPaginationPrev p::after,
+.sdPaginationNext p::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #000;
+  transition: width 0.3s ease;
+}
+
+.sdPaginationPrev p:hover::after,
+.sdPaginationNext p:hover::after {
+  width: 100%;
+}
+
+.paginationNum p {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.paginationNum p:not(:first-child)::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #000;
+  transition: width 0.3s ease;
+}
+
+.paginationNum p:hover::after {
+  width: 100%;
+}
+
+.paginationNum p:first-child::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+}
+
+.paginationNum {
+  display: flex;
+  gap: 30px;
+}
+
+/* responsive */
+
+@media screen and (max-width: 1210px) {
+  .shopDetails {
+    padding: 0 60px;
+    margin-top: 0;
+  }
+
+  .sdProductImages {
+    width: 100%;
+    height: 280px;
+  }
+
+  .sdProductContainer h4 {
+    display: none;
+  }
+
+  .sdProductImagesCart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 50%;
+    padding: 5px;
+    z-index: 8;
+    color: gray;
+  }
+
+  .shopDetailsProductsContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .shopDetails__left {
+    display: none;
+  }
+
+  .shopDetails__right {
+    width: 100%;
+  }
+
+  .filterRight {
+    display: flex;
+  }
+
+  .shopDetailsProductsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+
+  .sdProductImages {
+    width: 100%;
+    height: 490px;
+  }
+
+  .filterDrawer {
+    right: -750px;
+    width: 440px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sdProductImages {
+    width: 100%;
+    height: 240px;
+  }
+
+  .shopDetailsBreadcrumbLink {
+    display: none;
+  }
+
+  .filterLeft {
+    display: flex;
+  }
+
+  .filterRight {
+    display: none;
+  }
+
+  .filterDrawer {
+    right: -750px;
+    width: 420px;
+  }
+
+  .shopDetailsProductsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .shopDetails {
+    padding: 0 15px;
+  }
+  .shopDetails__right {
+    width: 100%;
+    gap: 30px;
+  }
+
+  .sdProductImages {
+    width: 100%;
+    height: 235px;
+  }
+
+  .filterDrawer {
+    right: -440px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .sdProductImages {
+    width: 100%;
+    height: 170px;
+  }
+
+  .sdProductNameInfo h5 {
+    font-size: 14px;
+  }
+
+  .sdProductNameInfo p {
+    font-size: 12px;
+  }
+
+  .sdProductRatingReviews {
+    display: flex;
+    gap: 5px;
+  }
+
+  .sdProductRatingReviews span {
+    font-size: 12px;
+  }
+
+  .sdProductRatingStar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+}

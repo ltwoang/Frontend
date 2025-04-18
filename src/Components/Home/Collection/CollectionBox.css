@@ -1,0 +1,269 @@
+.collection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 30px;
+  height: 30rem;
+  padding: 0 160px;
+  margin: 85px 0;
+}
+
+.collectionLeft {
+  background-image: url("../../../Assets/Collection/collection1.jpg");
+  background-size: cover;
+  background-position: center center;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: #eff0f1;
+}
+
+.col-link {
+  display: flex;
+}
+
+.col-link a {
+  position: relative;
+}
+
+.col-link a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 50%;
+  border-bottom: 2px solid black;
+  transition: width 0.2s ease;
+}
+
+.col-link a:hover::after {
+  width: 100%;
+}
+
+.collectionRight {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 30px;
+}
+
+.collectionTop {
+  background-image: url("../../../Assets/Collection/collection2.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+  background-color: #eff0f1;
+}
+
+.collectionBottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 30px;
+}
+
+.box1 {
+  background-image: url("../../../Assets/Collection/collection3.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+  background-color: #eff0f1;
+}
+
+.box2 {
+  background-color: #f4e5e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+}
+
+/* text in box style */
+
+.col-p {
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
+.col-h3 {
+  text-transform: uppercase;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.col-h3 span {
+  font-weight: bolder;
+}
+
+.collection h5 {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.collection a {
+  text-decoration: none;
+  color: black;
+}
+
+@media screen and (max-width: 1210px) {
+  .collection {
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+    padding: 0 60px;
+    height: auto;
+  }
+
+  .collectionLeft {
+    background-position: top center;
+    height: 150px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .collection {
+    padding: 0 15px;
+    grid-gap: 10px;
+  }
+
+  .collectionRight {
+    grid-gap: 10px;
+    grid-template-rows: 1fr;
+  }
+
+  .collectionTop {
+    height: 150px;
+  }
+
+  .collectionBottom {
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+  .box1 {
+    background-position: center top;
+    background-size: cover;
+    height: 150px;
+  }
+
+  .box2 {
+    height: 150px;
+  }
+}
+
+.collectionBox {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem 0;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.collectionBox1,
+.collectionBox2 {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.collectionBox1:hover,
+.collectionBox2:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.collectionBox1Img,
+.collectionBox2Img {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+}
+
+.collectionBox1Img img,
+.collectionBox2Img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.collectionBox1:hover .collectionBox1Img img,
+.collectionBox2:hover .collectionBox2Img img {
+  transform: scale(1.05);
+}
+
+.collectionBox1Content,
+.collectionBox2Content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+}
+
+.collectionBox1Content h3,
+.collectionBox2Content h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.collectionBox1Content p,
+.collectionBox2Content p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.collectionBox1Content h5,
+.collectionBox2Content h5 {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid white;
+  transition: all 0.3s ease;
+}
+
+.collectionBox1Content h5:hover,
+.collectionBox2Content h5:hover {
+  color: #d4af37;
+  border-bottom-color: #d4af37;
+}
+
+@media (max-width: 768px) {
+  .collectionBox {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .collectionBox1,
+  .collectionBox2 {
+    margin-bottom: 1rem;
+  }
+
+  .collectionBox1Img,
+  .collectionBox2Img {
+    height: 300px;
+  }
+
+  .collectionBox1Content h3,
+  .collectionBox2Content h3 {
+    font-size: 1.5rem;
+  }
+}
