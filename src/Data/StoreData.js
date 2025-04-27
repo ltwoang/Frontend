@@ -21,55 +21,80 @@ import limited3 from "../Assets/LimitedEdition/limited-3.jpg";
 import limited4 from "../Assets/LimitedEdition/limited-4.jpg";
 import limited5 from "../Assets/LimitedEdition/limited-5.jpg";
 
-const StoreData = [
+// Define the store data array containing all products
+export const storeData = [
+  // Necklace product
   {
-    productID: 1,
+    id: 1,
     productName: "18K Gold Diamond Pendant Necklace",
     productPrice: 1299,
-    productReviews: "1.2k+ reviews",
-    frontImg: "/path/to/necklace-front.jpg",
-    backImg: "/path/to/necklace-back.jpg"
+    productReviews: 1200,
+    productImages: {
+      front: Product_1,    // Front view of the necklace
+      back: Product_1_1,   // Back view of the necklace
+    },
   },
+
+  // Wedding Band product
   {
-    productID: 2,
+    id: 2,
     productName: "Platinum Wedding Band",
     productPrice: 899,
-    productReviews: "856 reviews",
-    frontImg: "/path/to/band-front.jpg",
-    backImg: "/path/to/band-back.jpg"
+    productReviews: 856,
+    productImages: {
+      front: Product_2,    // Front view of the wedding band
+      back: Product_2_1,   // Back view of the wedding band
+    },
   },
+
+  // Earrings product
   {
-    productID: 3,
+    id: 3,
     productName: "Rose Gold Pearl Earrings",
     productPrice: 499,
-    productReviews: "723 reviews",
-    frontImg: "/path/to/earrings-front.jpg",
-    backImg: "/path/to/earrings-back.jpg"
+    productReviews: 723,
+    productImages: {
+      front: Product_3,    // Front view of the earrings
+      back: Product_3_1,   // Back view of the earrings
+    },
   },
+
+  // Bracelet product
   {
-    productID: 4,
+    id: 4,
     productName: "Silver Charm Bracelet",
     productPrice: 299,
-    productReviews: "1.5k+ reviews",
-    frontImg: "/path/to/bracelet-front.jpg",
-    backImg: "/path/to/bracelet-back.jpg"
+    productReviews: 1500,
+    productImages: {
+      front: Product_4,    // Front view of the bracelet
+      back: Product_4_1,   // Back view of the bracelet
+    },
   },
+
+  // Diamond Ring product
   {
-    productID: 5,
+    id: 5,
     productName: "White Gold Diamond Ring",
     productPrice: 1999,
-    productReviews: "945 reviews",
-    frontImg: "/path/to/ring-front.jpg",
-    backImg: "/path/to/ring-back.jpg"
+    productReviews: 945,
+    productImages: {
+      front: Product_5,    // Front view of the diamond ring
+      back: Product_5_1,   // Back view of the diamond ring
+    },
   },
+
+  // Cufflinks product
   {
-    productID: 6,
+    id: 6,
     productName: "Black Onyx Men's Cufflinks",
     productPrice: 199,
-    productReviews: "432 reviews",
-    frontImg: "/path/to/cufflinks-front.jpg",
-    backImg: "/path/to/cufflinks-back.jpg"
+    productReviews: 432,
+    productImages: {
+      front: Product_6,    // Front view of the cufflinks
+      back: Product_6_1,   // Back view of the cufflinks
+    },
   },
+
   {
     productID: 7,
     frontImg: Product_7,
@@ -223,4 +248,5 @@ const StoreData = [
   },
 ];
 
-export default StoreData;
+// Export the store data as default
+export default storeData;

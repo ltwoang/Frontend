@@ -1,23 +1,26 @@
+// Import React
 import React from "react";
-import Banner from "../Components/Home/Banner/Banner";
-import CollectionBox from "../Components/Home/Collection/CollectionBox";
+
+// Import components for the home page
+import HeroSection from "../Components/Home/Hero/HeroSection";
 import Services from "../Components/Home/Services/Services";
-import Instagram from "../Components/Home/Instagram/Instagram";
 import Trendy from "../Components/Home/Trendy/Trendy";
 import LimitedEdition from "../Components/Home/Limited/LimitedEdition";
-import DealTimer from "../Components/Home/Deal/DealTimer";
-import HeroSection from "../Components/Home/Hero/HeroSection";
 
+/**
+ * Home page component
+ * Renders the main sections of the home page in order:
+ * 1. Hero section - Main banner/header
+ * 2. Trendy section - Featured products
+ * 3. Limited Edition section - Special products
+ * 4. Services section - Company services
+ */
 const Home = () => {
   return (
     <>
       <HeroSection />
-      <CollectionBox />
       <Trendy />
-      <DealTimer />
-      <Banner />
       <LimitedEdition />
-      <Instagram />
       <Services />
     </>
   );

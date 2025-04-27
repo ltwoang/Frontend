@@ -60,6 +60,11 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/categories" onClick={scrollToTop}>
+                  CATEGORIES
+                </Link>
+              </li>
+              <li>
                 <Link to="/blog" onClick={scrollToTop}>
                   BLOG
                 </Link>
@@ -145,6 +150,11 @@ const Navbar = () => {
                 <li>
                   <Link to="/shop" onClick={toggleMobileMenu}>
                     SHOP
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/categories" onClick={toggleMobileMenu}>
+                    CATEGORIES
                   </Link>
                 </li>
                 <li>

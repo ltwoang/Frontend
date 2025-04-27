@@ -1,24 +1,89 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ShopDetails.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../Features/Cart/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 import Filter from "../Filters/Filter";
 import { Link } from "react-router-dom";
-import StoreData from "../../../Data/StoreData";
 import { FiHeart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { IoFilterSharp, IoClose } from "react-icons/io5";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
-import { FaCartPlus } from "react-icons/fa";
+import { FaCartPlus, FaShoppingBag } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { productService } from "../../../Services/productService";
 
+/**
+ * ShopDetails Component
+ * Displays detailed information about a product and handles cart operations
+ * Features:
+ * - Product image gallery
+ * - Product information display
+ * - Add to cart functionality
+ * - Buy now functionality
+ * - Wishlist toggle
+ * - Quantity selection
+ */
 const ShopDetails = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  // State management
   const [wishList, setWishList] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sortOption, setSortOption] = useState("default");
+  const [filters, setFilters] = useState({
+    category: [],
+    priceRange: { min: 0, max: 10000 },
+    rating: 0
+  });
+
+  // Fetch products with filters and sorting
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const skip = (currentPage - 1) * 6;
+        const response = await productService.getProducts({
+          limit: 6,
+          skip: skip,
+          sort: sortOption === 'default' ? undefined : sortOption
+        });
+        
+        // Transform the API response to match our product structure
+        const transformedProducts = response.products.map(product => ({
+          id: product.id,
+          productID: product.id,
+          productName: product.title,
+          productPrice: product.price,
+          frontImg: product.thumbnail,
+          backImg: product.images[0],
+          category: product.category,
+          rating: Math.floor(product.rating),
+          reviews: `${product.stock} reviews`,
+          stock: product.stock
+        }));
+        
+        setProducts(transformedProducts);
+        setTotalPages(Math.ceil(response.total / 6));
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        toast.error("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [currentPage, sortOption, filters]);
 
   const handleWishlistClick = (productID) => {
     setWishList((prevWishlist) => ({
@@ -40,6 +105,21 @@ const ShopDetails = () => {
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    scrollToTop();
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+    setCurrentPage(1); // Reset to first page when changing sort
+  };
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    setCurrentPage(1); // Reset to first page when changing filters
   };
 
   const cartItems = useSelector((state) => state.cart.items);
@@ -77,12 +157,34 @@ const ShopDetails = () => {
     }
   };
 
+  const handleBuyNow = (product) => {
+    dispatch(addToCart(product));
+    navigate('/checkout');
+  };
+
+  if (loading) {
+    return (
+      <div className="shopDetails">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="shopDetails">
+        <h2>Error loading products</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="shopDetails">
         <div className="shopDetailMain">
           <div className="shopDetails__left">
-            <Filter />
+            <Filter onFilterChange={handleFilterChange} />
           </div>
           <div className="shopDetails__right">
             <div className="shopDetailsSorting">
@@ -98,9 +200,14 @@ const ShopDetails = () => {
                 <p>Filter</p>
               </div>
               <div className="shopDetailsSort">
-                <select name="sort" id="sort">
+                <select 
+                  name="sort" 
+                  id="sort"
+                  value={sortOption}
+                  onChange={handleSortChange}
+                >
                   <option value="default">Default Sorting</option>
-                  <option value="Featured">Featured</option>
+                  <option value="featured">Featured</option>
                   <option value="bestSelling">Best Selling</option>
                   <option value="a-z">Alphabetically, A-Z</option>
                   <option value="z-a">Alphabetically, Z-A</option>
@@ -118,62 +225,63 @@ const ShopDetails = () => {
             </div>
             <div className="shopDetailsProducts">
               <div className="shopDetailsProductsContainer">
-                {StoreData.slice(0, 6).map((product) => (
-                  <div className="sdProductContainer">
+                {products.map((product) => (
+                  <div className="sdProductContainer" key={product.id}>
                     <div className="sdProductImages">
-                      <Link to="/Product" onClick={scrollToTop}>
+                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
                         <img
                           src={product.frontImg}
-                          alt=""
+                          alt={product.productName}
                           className="sdProduct_front"
                         />
                         <img
                           src={product.backImg}
-                          alt=""
+                          alt={product.productName}
                           className="sdProduct_back"
                         />
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>
-                        Add to Cart
-                      </h4>
-                    </div>
-                    <div
-                      className="sdProductImagesCart"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      <FaCartPlus />
+                      <div className="sdProductActions">
+                        <button 
+                          className="addToCartBtn"
+                          onClick={() => handleAddToCart(product)}
+                        >
+                          <FaCartPlus /> Add to Cart
+                        </button>
+                        <button 
+                          className="buyNowBtn"
+                          onClick={() => handleBuyNow(product)}
+                        >
+                          <FaShoppingBag /> Buy Now
+                        </button>
+                      </div>
                     </div>
                     <div className="sdProductInfo">
                       <div className="sdProductCategoryWishlist">
-                        <p>{product.productName.includes("Necklace") ? "Necklaces" : 
-                            product.productName.includes("Ring") ? "Rings" :
-                            product.productName.includes("Earrings") ? "Earrings" :
-                            product.productName.includes("Bracelet") ? "Bracelets" :
-                            product.productName.includes("Cufflinks") ? "Men's Jewelry" : "Jewelry"}</p>
+                        <p>{product.category || "Jewelry"}</p>
                         <FiHeart
-                          onClick={() => handleWishlistClick(product.productID)}
+                          onClick={() => handleWishlistClick(product.id)}
                           style={{
-                            color: wishList[product.productID]
-                              ? "red"
-                              : "#767676",
+                            color: wishList[product.id] ? "red" : "#767676",
                             cursor: "pointer",
                           }}
                         />
                       </div>
                       <div className="sdProductNameInfo">
-                        <Link to="/product" onClick={scrollToTop}>
+                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
                           <h5>{product.productName}</h5>
                         </Link>
                         <p>${product.productPrice}</p>
                         <div className="sdProductRatingReviews">
                           <div className="sdProductRatingStar">
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
+                            {[...Array(5)].map((_, i) => (
+                              <FaStar
+                                key={i}
+                                color={i < product.rating ? "#FEC78A" : "#ddd"}
+                                size={10}
+                              />
+                            ))}
                           </div>
-                          <span>{product.productReviews}</span>
+                          <span>{product.reviews}</span>
                         </div>
                       </div>
                     </div>
@@ -183,21 +291,32 @@ const ShopDetails = () => {
             </div>
             <div className="shopDetailsPagination">
               <div className="sdPaginationPrev">
-                <p onClick={scrollToTop}>
+                <p 
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className={currentPage === 1 ? "disabled" : ""}
+                >
                   <FaAngleLeft />
                   Prev
                 </p>
               </div>
               <div className="sdPaginationNumber">
                 <div className="paginationNum">
-                  <p onClick={scrollToTop}>1</p>
-                  <p onClick={scrollToTop}>2</p>
-                  <p onClick={scrollToTop}>3</p>
-                  <p onClick={scrollToTop}>4</p>
+                  {[...Array(totalPages)].map((_, index) => (
+                    <p
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={currentPage === index + 1 ? "active" : ""}
+                    >
+                      {index + 1}
+                    </p>
+                  ))}
                 </div>
               </div>
               <div className="sdPaginationNext">
-                <p onClick={scrollToTop}>
+                <p 
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className={currentPage === totalPages ? "disabled" : ""}
+                >
                   Next
                   <FaAngleRight />
                 </p>
@@ -213,7 +332,7 @@ const ShopDetails = () => {
           <IoClose onClick={closeDrawer} className="closeButton" size={26} />
         </div>
         <div className="drawerContent">
-          <Filter />
+          <Filter onFilterChange={handleFilterChange} />
         </div>
       </div>
     </>

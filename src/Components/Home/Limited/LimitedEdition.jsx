@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LimitedEdition.css";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -8,24 +8,57 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { Navigation } from "swiper/modules";
-import { Autoplay } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 
 import { Link } from "react-router-dom";
 
-import StoreData from "../../../Data/StoreData";
-
 import { FiHeart } from "react-icons/fi";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaCartPlus } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { FaCartPlus } from "react-icons/fa";
 
 import toast from "react-hot-toast";
+import { productService } from "../../../Services/productService";
 
 const LimitedEdition = () => {
   const dispatch = useDispatch();
 
   const [wishList, setWishList] = useState({});
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchExclusiveProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await productService.getProducts({ limit: 5, skip: 0 });
+        
+        // Transform the API response to match our product structure
+        const transformedProducts = response.products.map(product => ({
+          id: product.id,
+          productID: product.id,
+          productName: product.title,
+          productPrice: product.price,
+          frontImg: product.thumbnail,
+          backImg: product.images[0],
+          category: product.category,
+          rating: Math.floor(product.rating),
+          reviews: `${product.stock} reviews`,
+          stock: product.stock
+        }));
+        
+        setProducts(transformedProducts);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        toast.error("Failed to load exclusive products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExclusiveProducts();
+  }, []);
 
   const handleWishlistClick = (productID) => {
     setWishList((prevWishlist) => ({
@@ -76,6 +109,24 @@ const LimitedEdition = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="limitedProductSection">
+        <h2>Loading exclusive products...</h2>
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="limitedProductSection">
+        <h2>Error loading exclusive products</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="limitedProductSection">
@@ -122,67 +173,62 @@ const LimitedEdition = () => {
               },
             }}
           >
-            {StoreData.slice(8, 13).map((product) => {
-              return (
-                <SwiperSlide key={product.productID}>
-                  <div className="lpContainer">
-                    <div className="lpImageContainer">
-                      <Link to="/Product" onClick={scrollToTop}>
-                        <img
-                          src={product.frontImg}
-                          alt={product.productName}
-                          className="lpImage"
-                        />
+            {products.map((product) => (
+              <SwiperSlide key={product.productID}>
+                <div className="lpContainer">
+                  <div className="lpImageContainer">
+                    <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                      <img
+                        src={product.frontImg}
+                        alt={product.productName}
+                        className="lpImage"
+                      />
+                    </Link>
+                    <h4 onClick={() => handleAddToCart(product)}>
+                      Add to Cart
+                    </h4>
+                  </div>
+                  <div
+                    className="lpProductImagesCart"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    <FaCartPlus />
+                  </div>
+                  <div className="limitedProductInfo">
+                    <div className="lpCategoryWishlist">
+                      <p>{product.category}</p>
+                      <FiHeart
+                        onClick={() => handleWishlistClick(product.productID)}
+                        style={{
+                          color: wishList[product.productID]
+                            ? "red"
+                            : "#767676",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </div>
+                    <div className="productNameInfo">
+                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                        <h5>{product.productName}</h5>
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>
-                        Add to Cart
-                      </h4>
-                    </div>
-                    <div
-                      className="lpProductImagesCart"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      <FaCartPlus />
-                    </div>
-                    <div className="limitedProductInfo">
-                      <div className="lpCategoryWishlist">
-                        <p>{product.productName.includes("Necklace") ? "Necklaces" : 
-                            product.productName.includes("Ring") ? "Rings" :
-                            product.productName.includes("Earrings") ? "Earrings" :
-                            product.productName.includes("Bracelet") ? "Bracelets" :
-                            product.productName.includes("Cufflinks") ? "Men's Jewelry" : "Jewelry"}</p>
-                        <FiHeart
-                          onClick={() => handleWishlistClick(product.productID)}
-                          style={{
-                            color: wishList[product.productID]
-                              ? "red"
-                              : "#767676",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </div>
-                      <div className="productNameInfo">
-                        <Link to="/Product" onClick={scrollToTop}>
-                          <h5>{product.productName}</h5>
-                        </Link>
-                        <p>${product.productPrice}</p>
-                        <div className="productRatingReviews">
-                          <div className="productRatingStar">
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                          </div>
-
-                          <span>{product.productReviews}</span>
+                      <p>${product.productPrice}</p>
+                      <div className="productRatingReviews">
+                        <div className="productRatingStar">
+                          {[...Array(5)].map((_, i) => (
+                            <FaStar
+                              key={i}
+                              color={i < product.rating ? "#FEC78A" : "#ddd"}
+                              size={10}
+                            />
+                          ))}
                         </div>
+                        <span>{product.reviews}</span>
                       </div>
                     </div>
                   </div>
-                </SwiperSlide>
-              );
-            })}
+                </div>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>

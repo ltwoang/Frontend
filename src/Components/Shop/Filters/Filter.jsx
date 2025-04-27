@@ -1,46 +1,89 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Filter.css";
 import { IoIosArrowDown } from "react-icons/io";
 import { BiSearch } from "react-icons/bi";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import Slider from "@mui/material/Slider";
+import { categoryService } from "../../../Services/categoryService";
+import toast from "react-hot-toast";
 
-const Filter = () => {
+const Filter = ({ onFilterChange }) => {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [value, setValue] = useState([0, 10000]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  // Fetch categories on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const data = await categoryService.getAllCategories();
+        setCategories(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        toast.error("Failed to load categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    onFilterChange({
+      priceRange: { min: newValue[0], max: newValue[1] },
+      categories: selectedCategories,
+      colors: selectedColors,
+      sizes: selectedSizes
+    });
   };
 
   const handleColorChange = (color) => {
-    setSelectedColors((prev) =>
-      prev.includes(color)
-        ? prev.filter((c) => c !== color)
-        : [...prev, color]
-    );
+    const newColors = selectedColors.includes(color)
+      ? selectedColors.filter((c) => c !== color)
+      : [...selectedColors, color];
+    setSelectedColors(newColors);
+    onFilterChange({
+      priceRange: { min: value[0], max: value[1] },
+      categories: selectedCategories,
+      colors: newColors,
+      sizes: selectedSizes
+    });
   };
 
   const handleSizeChange = (size) => {
-    setSelectedSizes((prev) =>
-      prev.includes(size)
-        ? prev.filter((s) => s !== size)
-        : [...prev, size]
-    );
+    const newSizes = selectedSizes.includes(size)
+      ? selectedSizes.filter((s) => s !== size)
+      : [...selectedSizes, size];
+    setSelectedSizes(newSizes);
+    onFilterChange({
+      priceRange: { min: value[0], max: value[1] },
+      categories: selectedCategories,
+      colors: selectedColors,
+      sizes: newSizes
+    });
   };
 
-  const filterCategories = [
-    "Necklaces",
-    "Rings",
-    "Earrings",
-    "Bracelets",
-    "Watches",
-    "Men's Jewelry",
-    "Wedding & Engagement",
-    "Gifts"
-  ];
+  const handleCategoryChange = (categoryId) => {
+    const newCategories = selectedCategories.includes(categoryId)
+      ? selectedCategories.filter((c) => c !== categoryId)
+      : [...selectedCategories, categoryId];
+    setSelectedCategories(newCategories);
+    onFilterChange({
+      priceRange: { min: value[0], max: value[1] },
+      categories: newCategories,
+      colors: selectedColors,
+      sizes: selectedSizes
+    });
+  };
 
   const filterColors = [
     "Gold",
@@ -71,6 +114,22 @@ const Filter = () => {
     brand.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (loading) {
+    return (
+      <div className="filterSection">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="filterSection">
+        <div className="error-message">{error}</div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="filterSection">
@@ -85,8 +144,18 @@ const Filter = () => {
               <h5 className="filterHeading">Product Categories</h5>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
-              {filterCategories.map((category, index) => (
-                <p key={index}>{category}</p>
+              {categories.map((category) => (
+                <div key={category.id} className="category-item">
+                  <input
+                    type="checkbox"
+                    id={`category-${category.id}`}
+                    checked={selectedCategories.includes(category.id)}
+                    onChange={() => handleCategoryChange(category.id)}
+                  />
+                  <label htmlFor={`category-${category.id}`}>
+                    {category.name}
+                  </label>
+                </div>
               ))}
             </AccordionDetails>
           </Accordion>

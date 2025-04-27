@@ -34,11 +34,10 @@ const Footer = () => {
               <img src={logo} alt="" Z />
             </div>
 
-            <p>1418 River Drive, Suite 35 Cottonhall, CA 9622 United States</p>
+            <p>Viet Nam</p>
 
             <div className="footer_address">
-              <strong> sale@uomo.com </strong>
-              <strong> +1 246-345-0695 </strong>
+              <strong> +0123456789 </strong>
             </div>
 
             <div className="social_links">
@@ -46,7 +45,6 @@ const Footer = () => {
               <FaXTwitter />
               <FaInstagram />
               <FaYoutube />
-              <FaPinterest />
             </div>
           </div>
 
@@ -138,18 +136,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer_bottom">
-          <p>
-            © {getCurrentYear()} Uomo. All Rights Reserved | Made By{" "}
-            <a
-              href="https://github.com/shakti177"
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: "#C22928", textDecoration: "none" }}
-            >
-              Shakti Tamrakar
-            </a>{" "}
-            with ❤️
-          </p>
+          
           <div className="footerLangCurrency">
             <div className="footerLang">
               <p>Language</p>
